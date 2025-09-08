@@ -71,6 +71,7 @@ echo -e "${BLUE}
  |  _  |  __/ | |  __/
  |_| |_|\___|_|_|\___||___/
 
+ CHALKAN3-SLOTH-ENV
 ${NC}"
 log_info "Starting Salt Minion bootstrap... ${START_EMOJI}"
 log_info "Preparing to install Salt Minion. ${SLOTH_EMOJI}"
