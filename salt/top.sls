@@ -5,3 +5,4 @@ base:
     - fonts
     - users
     - zinit
+    - neovim
