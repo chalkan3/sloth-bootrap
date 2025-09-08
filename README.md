@@ -32,7 +32,7 @@ The `install.sh` script is the starting point. You will need to host it somewher
 On the server where you want to set up the environment, run the following command. Remember to replace `https://your-server.com/install.sh` with the actual URL where you hosted the script:
 
 ```bash
-bash <(curl -s https://your-server.com/install.sh)
+bash <(curl -sL https://raw.githubusercontent.com/chalkan3/sloth-bootstrap/main/install.sh)
 ```
 
 Observe the colorful log and emojis as the Salt Minion is installed and configured! 🦥
