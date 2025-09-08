@@ -64,15 +64,15 @@ apply_salt_states() {
     log_success "Salt states applied successfully! ${SUCCESS_EMOJI}"
 }
 
-echo -e "${BLUE}
+echo -e '${BLUE}
   ____  _ 
  / ___|| | __ _  ___  ___ 
- \___ \| |/ _` |/ _ \\/ __| 
+ \___ \| |/ _` |/ _ \/ __| 
   ___) | | (_| | (_) |\__ \ 
  |____/|_|\__,_|\___/|___/ 
 
  CHALKAN3-SLOTH-ENV
-${NC}"
+${NC}'
 log_info "Starting Salt Minion bootstrap... ${START_EMOJI}"
 log_info "Preparing to install Salt Minion. ${SLOTH_EMOJI}"
 
