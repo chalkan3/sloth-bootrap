@@ -13,3 +13,13 @@ chalkan3_dotfiles:
     - force_checkout: True
     - require:
       - user: chalkan3_user
+
+chalkan3_stow_zsh:
+  cmd.run:
+    - name: stow zsh
+    - cwd: /home/chalkan3/.dotfiles
+    - runas: chalkan3
+    - require:
+      - git: chalkan3_dotfiles
+      - pkg: stow_package
+      - sls: lsd
