@@ -22,3 +22,4 @@ chalkan3_stow_zsh:
     - require:
       - git: chalkan3_dotfiles
       - pkg: stow_package
+      - pkg: lsd_package
