@@ -5,7 +5,3 @@ zsh_package:
 stow_package:
   pkg.installed:
     - name: stow
-
-unzip_package:
-  pkg.installed:
-    - name: unzip
