@@ -1,6 +1,6 @@
 lvim_install_script:
   cmd.run:
-    - name: LV_BRANCH='release-1.3/neovim-0.9' bash <(curl -sL https://raw.githubusercontent.com/LunarVim/LunarVim/release-1.3/neovim-0.9/utils/installer/install.sh)
+    - name: LV_BRANCH='release-1.3/neovim-0.9' bash <(curl -sL https://raw.githubusercontent.com/LunarVim/LunarVim/release-1.3/neovim-0.9/utils/installer/install.sh) --yes
     - runas: chalkan3
     - unless: test -d /home/chalkan3/.config/lvim # Check if lvim config directory exists
     - require:
