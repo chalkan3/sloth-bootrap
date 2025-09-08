@@ -6,5 +6,6 @@ base:
     - users
     - zinit
     - neovim
+    - lvim
     - nvm
     - rust
