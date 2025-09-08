@@ -16,8 +16,8 @@ START_EMOJI="🚀"
 DONE_EMOJI="🎉"
 
 # --- Repository and Clone Configuration ---
-REPO_URL="https://github.com/chalkan3/sloth-bootstrap.git"
-CLONE_DIR="/tmp/sloth-bootstrap"
+REPO_URL="https://github.com/chalkan3/sloth-bootrap.git"
+CLONE_DIR="/tmp/sloth-bootrap"
 
 log_info() {
     echo -e "${BLUE}${INFO_EMOJI} INFO: $1${NC}"
@@ -42,7 +42,7 @@ log_working() {
 
 # --- Helper Functions for Salt State Management ---
 copy_salt_states() {
-    log_info "Copying Salt states from cloned repository to /srv/salt... ${SLOTH_EMOJI}"
+    log_info "Copying Salt states from cloned repository (${CLONE_DIR}) to /srv/salt... ${SLOTH_EMOJI}"
     SALT_SOURCE_DIR="${CLONE_DIR}/salt"
 
     if [ ! -d "$SALT_SOURCE_DIR" ]; then
