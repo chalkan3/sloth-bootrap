@@ -2,3 +2,4 @@ base:
   '*':
     - packages
     - users
+    - zinit
