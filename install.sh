@@ -36,6 +36,26 @@ log_working() {
     echo -e "${BLUE}${WORKING_EMOJI} WORKING: $1${NC}"
 }
 
+# --- Helper Functions for Salt State Management ---
+copy_salt_states() {
+    log_info "Copying Salt states to /srv/salt... ${SLOTH_EMOJI}"
+    SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" &>/dev/null && pwd)"
+    SALT_SOURCE_DIR="${SCRIPT_DIR}/salt"
+
+    if [ ! -d "$SALT_SOURCE_DIR" ]; then
+        log_error "Salt states directory not found at ${SALT_SOURCE_DIR}. Please ensure the 'salt' directory is present alongside 'install.sh'. ${FAIL_EMOJI}"
+    fi
+
+    sudo cp -r "${SALT_SOURCE_DIR}"/* /srv/salt/ || log_error "Failed to copy Salt states. ${FAIL_EMOJI}"
+    log_success "Salt states copied to /srv/salt! ${SUCCESS_EMOJI}"
+}
+
+apply_salt_states() {
+    log_info "Applying Salt states locally... ${SLOTH_EMOJI}"
+    sudo salt-call --local state.apply || log_error "Failed to apply Salt states. ${FAIL_EMOJI}"
+    log_success "Salt states applied successfully! ${SUCCESS_EMOJI}"
+}
+
 echo -e "${BLUE}
   _   _      _ _
  | | | | ___| | | ___  ___
@@ -107,11 +127,7 @@ sudo systemctl restart salt-minion || log_error "Failed to restart salt-minion s
 
 log_success "Salt Minion configured for masterless and service restarted! ${SUCCESS_EMOJI}"
 
-log_info "Creating directory for Salt states. ${SLOTH_EMOJI}"
-sudo mkdir -p /srv/salt || log_error "Failed to create /srv/salt. ${FAIL_EMOJI}"
+copy_salt_states
+apply_salt_states
 
-log_info "Copy your .sls files to /srv/salt. ${SLOTH_EMOJI}"
-log_info "Example: sudo cp -r /path/to/your/salt/states/* /srv/salt/ ${SLOTH_EMOJI}"
-
-log_info "To execute Salt states locally, use: ${YELLOW}sudo salt-call --local state.apply${NC} ${DONE_EMOJI}"
-log_success "Bootstrap complete! You can now execute your Salt states. ${DONE_EMOJI}"
+log_success "Bootstrap complete! Salt Minion installed, configured, and states applied. ${DONE_EMOJI}"
