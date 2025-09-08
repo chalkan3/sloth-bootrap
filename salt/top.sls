@@ -7,3 +7,4 @@ base:
     - zinit
     - neovim
     - nvm
+    - rust
