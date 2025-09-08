@@ -34,3 +34,16 @@ neovim_install:
     - require:
       - cmd: neovim_download
     - unless: test -f /home/chalkan3/.local/bin/nvim # Only install if nvim is not installed
+
+neovim_path_config:
+  file.append:
+    - name: /home/chalkan3/.zshrc
+    - text: |
+        # Add ~/.local/bin to PATH if it exists
+        if [ -d "$HOME/.local/bin" ] ; then
+            PATH="$HOME/.local/bin:$PATH"
+        fi
+    - unless: grep -q "$HOME/.local/bin" /home/chalkan3/.zshrc
+    - require:
+      - user: chalkan3_user
+      - cmd: neovim_install # Ensure neovim is installed before configuring path
