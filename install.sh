@@ -77,38 +77,15 @@ fi
 
 log_working "Detecting operating system: ${OS} ${WORKING_EMOJI}"
 
-case "$OS" in
-    ubuntu|debian) 
-        log_info "System detected: Ubuntu/Debian. Adding SaltStack repository. ${SLOTH_EMOJI}"
-        log_working "Updating package indexes... ${WORKING_EMOJI}"
-        sudo apt-get update || log_error "Failed to update apt. ${FAIL_EMOJI}"
-        log_working "Installing dependencies... ${WORKING_EMOJI}"
-        sudo apt-get install -y wget gnupg || log_error "Failed to install dependencies. ${FAIL_EMOJI}"
-
-        log_working "Adding SaltStack GPG key... ${WORKING_EMOJI}"
-        wget -O - https://repo.saltproject.io/py3/ubuntu/22.04/amd64/archive/2023.3.1/SALTSTACK-GPG-KEY.pub | sudo gpg --dearmor -o /usr/share/keyrings/salt-archive-keyring.gpg || log_error "Failed to add GPG key. ${FAIL_EMOJI}"
-
-        log_working "Adding SaltStack repository... ${WORKING_EMOJI}"
-        echo "deb [signed-by=/usr/share/keyrings/salt-archive-keyring.gpg] https://repo.saltproject.io/py3/ubuntu/22.04/amd64/archive/2023.3.1 jammy main" | sudo tee /etc/apt/sources.list.d/salt.list || log_error "Failed to add repository. ${FAIL_EMOJI}"
-
-        log_working "Updating package indexes again... ${WORKING_EMOJI}"
-        sudo apt-get update || log_error "Failed to update apt after adding repo. ${FAIL_EMOJI}"
-        log_working "Installing salt-minion... ${WORKING_EMOJI}"
-        sudo apt-get install -y salt-minion || log_error "Failed to install salt-minion. ${FAIL_EMOJI}"
-        ;; 
-    centos|rhel|fedora) 
-        log_info "System detected: CentOS/RHEL/Fedora. Adding SaltStack repository. ${SLOTH_EMOJI}"
-        log_working "Installing EPEL repository... ${WORKING_EMOJI}"
-        sudo yum install -y epel-release || log_error "Failed to install epel-release. ${FAIL_EMOJI}"
-        log_working "Installing SaltStack repository... ${WORKING_EMOJI}"
-        sudo yum install -y https://repo.saltproject.io/py3/redhat/salt-py3-repo-latest.el8.noarch.rpm || log_error "Failed to install SaltStack repo. ${FAIL_EMOJI}"
-        log_working "Installing salt-minion... ${WORKING_EMOJI}"
-        sudo yum install -y salt-minion || log_error "Failed to install salt-minion. ${FAIL_EMOJI}"
-        ;; 
-    *)
-        log_error "Operating system ${OS} not supported for automatic Salt Minion installation. ${FAIL_EMOJI}"
-        ;; 
-esac
+if [[ "$OS" == "ubuntu" || "$OS" == "debian" ]]; then
+    log_info "System detected: Ubuntu/Debian. Installing salt-minion. ${SLOTH_EMOJI}"
+    log_working "Updating package indexes... ${WORKING_EMOJI}"
+    sudo apt-get update || log_error "Failed to update apt. ${FAIL_EMOJI}"
+    log_working "Installing salt-minion... ${WORKING_EMOJI}"
+    sudo apt-get install -y salt-minion || log_error "Failed to install salt-minion. ${FAIL_EMOJI}"
+else
+    log_error "Operating system ${OS} not supported. This script only supports Ubuntu/Debian. ${FAIL_EMOJI}"
+fi
 
 log_success "Salt Minion installed successfully! ${SUCCESS_EMOJI}"
 
