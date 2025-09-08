@@ -37,25 +37,7 @@ bash <(curl -sL https://raw.githubusercontent.com/chalkan3/sloth-bootrap/master/
 
 Observe the colorful log and emojis as the Salt Minion is installed and configured! 🦥
 
-### Step 3: Copy Salt States
 
-After the `install.sh` script completes, you will need to copy the Salt state files (`.sls`) from this repository to the `/srv/salt` directory on your server. This is where the `salt-minion` looks for states in masterless mode.
-
-Assuming you are in the root directory of this project (`/home/chalkan3/.projects/sloth-bootstrap`), execute:
-
-```bash
-sudo cp -r salt/* /srv/salt/
-```
-
-### Step 4: Apply Salt States
-
-With the Salt states in place, you can now instruct the `salt-minion` to apply them locally. This will install `zsh` and create the `chalkan3` user.
-
-```bash
-sudo salt-call --local state.apply
-```
-
-🎉 Congratulations! Your environment should now have `zsh` installed and the `chalkan3` user configured to use it.
 
 ## 📂 Project Structure
 
