@@ -49,6 +49,10 @@ copy_salt_states() {
         log_error "Salt states directory not found at ${SALT_SOURCE_DIR}. Please ensure the 'salt' directory is present in the cloned repository. ${FAIL_EMOJI}"
     fi
 
+    log_working "Ensuring /srv/salt directory exists... ${WORKING_EMOJI}"
+    sudo mkdir -p /srv/salt/ || log_error "Failed to create /srv/salt directory. ${FAIL_EMOJI}"
+    log_success "/srv/salt directory ensured! ${SUCCESS_EMOJI}"
+
     sudo cp -r "${SALT_SOURCE_DIR}"/* /srv/salt/ || log_error "Failed to copy Salt states. ${FAIL_EMOJI}"
     log_success "Salt states copied to /srv/salt! ${SUCCESS_EMOJI}"
 }
