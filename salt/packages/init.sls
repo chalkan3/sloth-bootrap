@@ -29,3 +29,8 @@ fd_package:
 ripgrep_package:
   pkg.installed:
     - name: ripgrep
+
+contextvars_install:
+  cmd.run:
+    - name: pip3 install contextvars
+    - unless: pip3 show contextvars # Check if already installed
