@@ -138,6 +138,11 @@ git clone "$REPO_URL" "$CLONE_DIR" || log_error "Failed to clone repository ${RE
 log_success "Repository cloned successfully to ${CLONE_DIR}! ${SUCCESS_EMOJI}"
 
 # --- Install contextvars for Salt pip module ---
+log_info "Ensuring 'pip3' is installed... ${SLOTH_EMOJI}"
+sudo apt-get update || log_error "Failed to update apt for pip3 installation. ${FAIL_EMOJI}"
+sudo apt-get install -y python3-pip || log_error "Failed to install pip3. ${FAIL_EMOJI}"
+log_success "'pip3' installed! ${SUCCESS_EMOJI}"
+
 log_info "Ensuring 'contextvars' Python package is installed for Salt... ${SLOTH_EMOJI}"
 sudo pip3 install contextvars || log_error "Failed to install 'contextvars' Python package. ${FAIL_EMOJI}"
 log_success "'contextvars' Python package installed! ${SUCCESS_EMOJI}"
