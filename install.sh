@@ -192,3 +192,30 @@ copy_salt_states
 apply_salt_states
 
 log_success "Bootstrap complete! Salt Minion installed, configured, and states applied. ${DONE_EMOJI}"
+
+print_installation_summary() {
+    log_info "Installation Summary:"
+    log_info "---------------------"
+    log_info "Salt Minion: Installed and configured for masterless mode."
+    log_info "  Verification: sudo salt-call --local test.ping"
+    log_info "User 'chalkan3': Created with zsh as default shell."
+    log_info "  Verification: su - chalkan3"
+    log_info "Dotfiles: Cloned to /home/chalkan3/.dotfiles and stowed."
+    log_info "  Verification: ls -la /home/chalkan3/.zshrc (should be a symlink)"
+    log_info "lsd: Installed."
+    log_info "  Verification: lsd --version"
+    log_info "Nerd Fonts: FiraCode Nerd Font installed."
+    log_info "  Verification: fc-list | grep FiraCode"
+    log_info "Neovim: Installed to /home/chalkan3/.local/bin/nvim."
+    log_info "  Verification: /home/chalkan3/.local/bin/nvim --version"
+    log_info "nvm & Node.js: nvm installed, Node.js LTS set as default for chalkan3."
+    log_info "  Verification: su - chalkan3 -c 'nvm --version && node --version'"
+    log_info "Rust Toolchain: rustup and cargo installed for chalkan3."
+    log_info "  Verification: su - chalkan3 -c 'rustup --version && cargo --version'"
+    log_info "LunarVim: Installed for chalkan3."
+    log_info "  Verification: su - chalkan3 -c 'lvim --version'"
+    log_info "---------------------"
+    log_success "All components should be installed and configured. Enjoy your new development environment! ${DONE_EMOJI}"
+}
+
+print_installation_summary
