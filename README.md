@@ -42,7 +42,7 @@ On the server where you want to set up the environment, run the following comman
 bash <(curl -sL https://raw.githubusercontent.com/chalkan3/sloth-bootrap/master/install.sh)
 ```
 
-Observe the colorful log and emojis as the Salt Minion is installed and configured, and your development environment is set up! 🦥
+You will be prompted to set a password for the `chalkan3` user during the installation. Observe the colorful log and emojis as the Salt Minion is installed and configured, and your development environment is set up! 🦥
 
 
 
@@ -51,6 +51,7 @@ Observe the colorful log and emojis as the Salt Minion is installed and configur
 ```
 .
 ├── install.sh             # Bootstrap script to install and configure the salt-minion
+├── uninstall.sh           # Script to uninstall the environment
 ├── README.md              # This file
 └── salt/
     ├── fonts/             # Salt state to install Nerd Fonts
@@ -66,6 +67,8 @@ Observe the colorful log and emojis as the Salt Minion is installed and configur
     ├── packages/          # Salt state to install system packages (e.g., zsh, stow, python, make, fd, ripgrep)
     │   └── init.sls
     ├── rust/              # Salt state to install rustup and cargo
+    │   └── init.sls
+    ├── uninstall/         # Salt state to uninstall the environment
     │   └── init.sls
     ├── users/             # Salt state to manage users and dotfiles (e.g., chalkan3)
     │   └── init.sls
@@ -86,6 +89,20 @@ Observe the colorful log and emojis as the Salt Minion is installed and configur
 ## 🤝 Contributing
 
 Feel free to contribute, open issues, or suggest improvements!
+
+## 🗑️ Uninstallation
+
+To completely remove the installed environment, including the `chalkan3` user, all installed packages, configurations, and Salt-related files, run the `uninstall.sh` script:
+
+```bash
+sudo bash uninstall.sh
+```
+
+This script will:
+- Remove the `chalkan3` user and their home directory.
+- Uninstall all system packages installed by the bootstrap script.
+- Remove all configuration files and directories created for Neovim, LunarVim, nvm, Rust, etc.
+- Purge the `salt-minion` package and clean up Salt configuration files.
 
 ## 📄 License
 
