@@ -20,7 +20,7 @@ DONE_EMOJI="🎉"
 spinner() {
     local pid=$!
     local delay=0.1
-    local spinstr='|/-\'
+    local spinstr="|/-"
     while ps -p $pid > /dev/null; do
         local temp=${spinstr#?}
         printf " [%c]  " "$spinstr"
