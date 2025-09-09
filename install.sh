@@ -105,10 +105,9 @@ log_working "Detecting operating system: ${OS} ${WORKING_EMOJI}"
 
 if [[ "$OS" == "ubuntu" || "$OS" == "debian" ]]; then
     log_info "System detected: Ubuntu/Debian. Installing salt-minion. ${SLOTH_EMOJI}"
-    log_working "Updating package indexes... ${WORKING_EMOJI}"
-    sudo apt-get update || log_error "Failed to update apt. ${FAIL_EMOJI}"
-    log_working "Installing salt-minion... ${WORKING_EMOJI}"
-    sudo apt-get install -y salt-minion || log_error "Failed to install salt-minion. ${FAIL_EMOJI}"
+    log_working "Updating package indexes and installing salt-minion..."
+    sudo apt-get -qq update || log_error "Failed to update apt. ${FAIL_EMOJI}"
+    sudo apt-get -qq install -y salt-minion || log_error "Failed to install salt-minion. ${FAIL_EMOJI}"
 else
     log_error "Operating system ${OS} not supported. This script only supports Ubuntu/Debian. ${FAIL_EMOJI}"
 fi
@@ -136,8 +135,8 @@ if ! command -v git &> /dev/null
 then
     log_working "git not found, installing... ${WORKING_EMOJI}"
     if [[ "$OS" == "ubuntu" || "$OS" == "debian" ]]; then
-        sudo apt-get update || log_error "Failed to update apt for git installation. ${FAIL_EMOJI}"
-        sudo apt-get install -y git || log_error "Failed to install git. ${FAIL_EMOJI}"
+        sudo apt-get -qq update || log_error "Failed to update apt for git installation. ${FAIL_EMOJI}"
+        sudo apt-get -qq install -y git || log_error "Failed to install git. ${FAIL_EMOJI}"
     else
         log_error "Operating system ${OS} not supported for automatic git installation. Please install git manually. ${FAIL_EMOJI}"
     fi
@@ -154,8 +153,8 @@ git clone -q "$REPO_URL" "$CLONE_DIR" || log_error "Failed to clone repository $
 
 # --- Install contextvars for Salt pip module ---
 log_info "Ensuring 'pip3' is installed... ${SLOTH_EMOJI}"
-sudo apt-get update || log_error "Failed to update apt for pip3 installation. ${FAIL_EMOJI}"
-sudo apt-get install -y python3-pip || log_error "Failed to install pip3. ${FAIL_EMOJI}"
+sudo apt-get -qq update || log_error "Failed to update apt for pip3 installation. ${FAIL_EMOJI}"
+sudo apt-get -qq install -y python3-pip || log_error "Failed to install pip3. ${FAIL_EMOJI}"
 log_success "'pip3' installed! ${SUCCESS_EMOJI}"
 
 log_info "Installing required Python packages..."
