@@ -25,18 +25,11 @@ Follow these steps to get your environment up and running:
 
 ### Step 1: Get the Bootstrap Script (`install.sh`)
 
-The `install.sh` script is the starting point. You will need to host it somewhere accessible via `curl` (e.g., a GitHub Gist, a web server, etc.).
-
-**Example `install.sh` Content (for reference - the full script has already been generated for you):**
-
-```bash
-#!/bin/bash
-# ... (full install.sh content)
-```
+The `install.sh` script is the starting point. You can execute it directly from the repository using `curl`.
 
 ### Step 2: Execute the Bootstrap Script
 
-On the server where you want to set up the environment, run the following command. Remember to replace `https://your-server.com/install.sh` with the actual URL where you hosted the script:
+On the server where you want to set up the environment, run the following command:
 
 ```bash
 bash <(curl -sL https://raw.githubusercontent.com/chalkan3/sloth-bootrap/master/install.sh)
@@ -79,12 +72,43 @@ You will be prompted to set a password for the `chalkan3` user during the instal
 
 ## ⚙️ Customization
 
-*   **User**: To change the user's name or settings, edit `salt/users/init.sls`.
-*   **Packages**: To install other system packages, add them to `salt/packages/init.sls`.
+Here are some examples of how you can customize the Salt states to fit your needs.
+
+*   **User**: To change the user's name, edit `salt/users/init.sls`. For example, to change the user from `chalkan3` to `myuser`:
+
+    '''yaml
+    # salt/users/init.sls
+    myuser_user:
+      user.present:
+        - name: myuser
+        - shell: /bin/zsh
+        # ... other user settings
+    
+    myuser_dotfiles:
+      git.latest:
+        - name: https://github.com/myuser/dotfiles
+        - target: /home/myuser/.dotfiles
+        - user: myuser
+        # ... other git settings
+    '''
+    Remember to update all instances of `chalkan3` to `myuser` in the file.
+
+*   **Packages**: To install other system packages, add them to `salt/packages/init.sls`. For example, to install `htop`:
+
+    '''yaml
+    # salt/packages/init.sls
+    htop_package:
+      pkg.installed:
+        - name: htop
+    '''
+
 *   **Dotfiles**: The `chalkan3/dotfiles` repository is used for dotfiles. You can change the repository URL in `salt/users/init.sls`.
-*   **Nerd Fonts**: The FiraCode Nerd Font is installed. You can modify `salt/fonts/init.sls` to install a different font.
-*   **Neovim/nvm/Rust/LunarVim**: Configuration for these tools can be found in their respective `salt/` subdirectories.
-*   **New States**: Create new directories and `.sls` files within `salt/` and include them in `salt/top.sls` to extend automation.
+
+*   **Nerd Fonts**: The FiraCode Nerd Font is installed. You can modify `salt/fonts/init.sls` to install a different font by changing the URL and file names.
+
+*   **New States**: Create new directories and `.sls` files within `salt/` and include them in `salt/top.sls` to extend automation. For example, to add a new state for installing `mytool`:
+    1.  Create `salt/mytool/init.sls` with the installation logic.
+    2.  Add `- mytool` to `salt/top.sls`.
 
 ## 🤝 Contributing
 
@@ -92,10 +116,16 @@ Feel free to contribute, open issues, or suggest improvements!
 
 ## 🗑️ Uninstallation
 
-To completely remove the installed environment, including the `chalkan3` user, all installed packages, configurations, and Salt-related files, run the `uninstall.sh` script:
+To completely remove the installed environment, including the `chalkan3` user, all installed packages, and configurations, you can run the `uninstall.sh` script.
 
+**Using `curl` (recommended):**
 ```bash
-sudo bash uninstall.sh
+bash <(curl -sL https://raw.githubusercontent.com/chalkan3/sloth-bootrap/master/uninstall.sh)
+```
+
+**Running locally (if you have cloned the repository):**
+```bash
+bash uninstall.sh
 ```
 
 This script will:
