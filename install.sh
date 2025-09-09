@@ -67,19 +67,22 @@ log_working() {
 
 prompt_for_password() {
     log_info "Please set a password for the chalkan3 user."
-    read -s -p "Enter password: " password
-    echo
-    read -s -p "Confirm password: " password_confirm
-    echo
+    while true; do
+        read -s -p "Enter password: " password
+        echo
+        read -s -p "Confirm password: " password_confirm
+        echo
 
-    if [ "$password" != "$password_confirm" ]; then
-        log_error "Passwords do not match. Aborting."
-    fi
-
-    log_info "Password confirmed. Hashing password..."
-    HASHED_PASSWORD=$(openssl passwd -6 "$password")
-    export HASHED_PASSWORD
-    log_success "Password hashed successfully!"
+        if [ "$password" = "$password_confirm" ]; then
+            log_info "Password confirmed. Hashing password..."
+            HASHED_PASSWORD=$(openssl passwd -6 "$password")
+            export HASHED_PASSWORD
+            log_success "Password hashed successfully!"
+            break # Exit the loop if passwords match
+        else
+            log_warning "Passwords do not match. Please try again."
+        fi
+    done
 }
 
 # --- Helper Functions for Salt State Management ---
@@ -199,7 +202,7 @@ print_installation_summary() {
     log_info "Salt Minion: Installed and configured for masterless mode."
     log_info "  Verification: sudo salt-call --local test.ping"
     log_info "User 'chalkan3': Created with zsh as default shell."
-    log_info "  Verification: su - chalkan3"
+    log_info "  To log in as 'chalkan3', use the password you set during installation."
     log_info "Dotfiles: Cloned to /home/chalkan3/.dotfiles and stowed."
     log_info "  Verification: ls -la /home/chalkan3/.zshrc (should be a symlink)"
     log_info "lsd: Installed."
