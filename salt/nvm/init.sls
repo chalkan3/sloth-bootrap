@@ -30,7 +30,10 @@ node_lts_install:
 
 npm_global_config:
   cmd.run:
-    - name: npm config set prefix '~/.npm-global'
+    - name: |
+        export NVM_DIR="$HOME/.nvm"
+        [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" # This loads nvm
+        npm config set prefix '~/.npm-global'
     - runas: chalkan3
     - unless: npm config get prefix | grep -q '~/.npm-global' # Check if already configured
     - require:

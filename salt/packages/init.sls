@@ -14,6 +14,14 @@ make_package:
   pkg.installed:
     - name: make
 
+fontconfig_package:
+  pkg.installed:
+    - name: fontconfig
+
+build_essential_package:
+  pkg.installed:
+    - name: build-essential
+
 python3_package:
   pkg.installed:
     - name: python3
