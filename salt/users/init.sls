@@ -3,6 +3,8 @@ chalkan3_user:
     - name: chalkan3
     - shell: /bin/zsh
     - password: {{ salt['pillar.get']('user_password') }}
+    - groups:
+      - sudo
     - require:
       - pkg: zsh_package
 
