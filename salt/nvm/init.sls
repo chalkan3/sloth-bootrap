@@ -20,7 +20,7 @@ nvm_source_config:
 node_lts_install:
   cmd.run:
     - name: |
-        export NVM_DIR="$HOME/.nvm"
+        export NVM_DIR="/home/chalkan3/.nvm"
         [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" # This loads nvm
         nvm install --lts && nvm alias default lts
     - runas: chalkan3
@@ -31,7 +31,7 @@ node_lts_install:
 npm_global_config:
   cmd.run:
     - name: |
-        export NVM_DIR="$HOME/.nvm"
+        export NVM_DIR="/home/chalkan3/.nvm"
         [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" # This loads nvm
         npm config set prefix '~/.npm-global'
     - runas: chalkan3

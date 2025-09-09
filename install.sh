@@ -142,6 +142,10 @@ fi
 
 log_success "Salt Minion installed successfully! ${SUCCESS_EMOJI}"
 
+# Stop salt-minion before configuring for masterless
+log_working "Stopping salt-minion service before configuration... ${WORKING_EMOJI}"
+sudo systemctl stop salt-minion || log_warning "Could not stop salt-minion service. Continuing anyway. ${SLOTH_EMOJI}"
+
 # --- Salt Minion Configuration for Masterless ---
 log_info "Configuring Salt Minion for masterless mode (salt-local). ${SLOTH_EMOJI}"
 log_working "Creating configuration directory for masterless... ${WORKING_EMOJI}"

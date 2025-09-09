@@ -16,4 +16,5 @@ install_firacode_nerdfont:
     - require:
       - pkg: unzip_package
       - file: nerdfonts_dir
+      - pkg: fontconfig_package
 
