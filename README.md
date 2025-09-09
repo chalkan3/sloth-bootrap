@@ -14,10 +14,16 @@ This project offers an elegant and efficient solution for:
 *   **Dotfiles Management**: Clones your `dotfiles` repository and uses `stow` to create symlinks for Zsh configuration.
 *   **Modern `ls` Replacement**: Installs `lsd` for enhanced directory listings.
 *   **Nerd Fonts Installation**: Installs FiraCode Nerd Font for improved terminal aesthetics and icon support.
-*   **Neovim Installation**: Installs the latest stable Neovim from its AppImage, configured for the `chalkan3` user.
+*   **Neovim Installation**: Installs Neovim from your system's package manager.
 *   **Node Version Manager (nvm)**: Installs `nvm` and sets up the latest LTS Node.js version as default for the `chalkan3` user.
 *   **Rust Toolchain**: Installs `rustup` and `cargo` for Rust development.
 *   **LunarVim Installation**: Installs LunarVim, a Neovim distribution, with its dependencies.
+
+## 💻 Raspberry Pi OS Compatibility
+
+This project is designed to be compatible with Raspberry Pi OS (Debian-based systems). `lsd` and Neovim are now installed directly from the system's package manager, ensuring ARM compatibility.
+
+**Note on LunarVim**: While LunarVim itself should install, its plugin synchronization and compilation steps can be significantly slower on Raspberry Pi devices due to their less powerful CPUs. Please be patient during this phase.
 
 ## 🛠️ How to Use
 
