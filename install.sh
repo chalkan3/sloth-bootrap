@@ -21,13 +21,17 @@ spinner() {
     local pid=$!
     local delay=0.1
     local spinstr="|/-"
+    local i=0
+    tput civis # Hide cursor
     while ps -p $pid > /dev/null; do
-        local temp=${spinstr#?}
-        printf " [%c]  " "$spinstr"
-        local spinstr=$temp${spinstr%"$temp"}
+        tput sc # Save cursor position
+        printf " [%c]  " "${spinstr:$i:1}"
+        tput rc # Restore cursor position
+        i=$(( (i+1) % ${#spinstr} ))
         sleep $delay
-        printf "\b\b\b\b\b\b"
     done
+    tput cnorm # Show cursor
+    printf "    \b\b\b\b" # Clear the spinner
 }
 
 run_with_spinner() {
