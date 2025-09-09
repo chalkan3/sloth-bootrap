@@ -69,17 +69,6 @@ cleanup_salt_files() {
 }
 
 main() {
-    echo -e "${BLUE}
-  _   _ _   _     _ _         _       _ 
- | | | | | | |   (_) |       | |     | | 
- | | | | |_| |__  _| |_    __| | __ _| |_ __ _ 
- | | | | __| '_ \| | __|  / _` |/ _` | __/ _` |
- | |_| | |_| | | | | |_  | (_| | (_| | || (_| |
-  \___/ \__|_| |_|_|\__|  \__,_|\__,_|\__\__,_|
-
-    SLOTH-ENV UNINSTALLER
-    ${NC}"
-
     log_info "Starting uninstallation process... ${START_EMOJI}"
 
     apply_uninstall_state
