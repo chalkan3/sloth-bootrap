@@ -16,6 +16,26 @@ WORKING_EMOJI="⚙️"
 START_EMOJI="🚀"
 DONE_EMOJI="🎉"
 
+# --- Spinner and Command Runner ---
+spinner() {
+    local pid=$!
+    local delay=0.1
+    local spinstr='|/-\'
+    while ps -p $pid > /dev/null; do
+        local temp=${spinstr#?}
+        printf " [%c]  " "$spinstr"
+        local spinstr=$temp${spinstr%"$temp"}
+        sleep $delay
+        printf "\b\b\b\b\b\b"
+    done
+}
+
+run_with_spinner() {
+    ("$@") & 
+    spinner
+    wait $!
+}
+
 # --- Repository and Clone Configuration ---
 REPO_URL="https://github.com/chalkan3/sloth-bootrap.git"
 CLONE_DIR="/tmp/sloth-bootrap"
@@ -77,19 +97,19 @@ copy_salt_states() {
 
 apply_salt_states() {
     log_info "Applying Salt states locally... ${SLOTH_EMOJI}"
-    sudo salt-call --local --pillar "{'user_password': '$HASHED_PASSWORD'}" state.apply || log_error "Failed to apply Salt states. ${FAIL_EMOJI}"
+    run_with_spinner sudo salt-call --local --pillar "{'user_password': '$HASHED_PASSWORD'}" state.apply || log_error "Failed to apply Salt states. ${FAIL_EMOJI}"
     log_success "Salt states applied successfully! ${SUCCESS_EMOJI}"
 }
 
-echo -e '${BLUE}
+echo -e "${BLUE}
   ____  _ 
  / ___|| | __ _  ___  ___ 
- \___ \| |/ _` |/ _ \/ __| 
-  ___) | | (_| | (_) |\__ \ 
+ \___ \| |/ _` |/ _ \/ __|
+  ___) | | (_| | (_) |\__ \
  |____/|_|\__,_|\___/|___/ 
 
  CHALKAN3-SLOTH-ENV
-${NC}'
+${NC}"
 log_info "Starting Salt Minion bootstrap... ${START_EMOJI}"
 log_info "Preparing to install Salt Minion. ${SLOTH_EMOJI}"
 
@@ -105,9 +125,10 @@ log_working "Detecting operating system: ${OS} ${WORKING_EMOJI}"
 
 if [[ "$OS" == "ubuntu" || "$OS" == "debian" ]]; then
     log_info "System detected: Ubuntu/Debian. Installing salt-minion. ${SLOTH_EMOJI}"
-    log_working "Updating package indexes and installing salt-minion..."
-    sudo apt-get -qq update || log_error "Failed to update apt. ${FAIL_EMOJI}"
-    sudo apt-get -qq install -y salt-minion || log_error "Failed to install salt-minion. ${FAIL_EMOJI}"
+    log_working "Updating package indexes... ${WORKING_EMOJI}"
+    run_with_spinner sudo apt-get -qq update || log_error "Failed to update apt. ${FAIL_EMOJI}"
+    log_working "Installing salt-minion... ${WORKING_EMOJI}"
+    run_with_spinner sudo apt-get -qq install -y salt-minion || log_error "Failed to install salt-minion. ${FAIL_EMOJI}"
 else
     log_error "Operating system ${OS} not supported. This script only supports Ubuntu/Debian. ${FAIL_EMOJI}"
 fi
@@ -125,7 +146,7 @@ echo "file_client: local" | sudo tee -a /etc/salt/minion.d/masterless.conf || lo
 
 log_working "Restarting salt-minion service... ${WORKING_EMOJI}"
 sudo systemctl enable salt-minion || log_warning "Could not enable salt-minion service. Continue manually if needed. ${SLOTH_EMOJI}"
-sudo systemctl restart salt-minion || log_error "Failed to restart salt-minion service. ${FAIL_EMOJI}"
+run_with_spinner sudo systemctl restart salt-minion || log_error "Failed to restart salt-minion service. ${FAIL_EMOJI}"
 
 log_success "Salt Minion configured for masterless and service restarted! ${SUCCESS_EMOJI}"
 
@@ -135,8 +156,8 @@ if ! command -v git &> /dev/null
 then
     log_working "git not found, installing... ${WORKING_EMOJI}"
     if [[ "$OS" == "ubuntu" || "$OS" == "debian" ]]; then
-        sudo apt-get -qq update || log_error "Failed to update apt for git installation. ${FAIL_EMOJI}"
-        sudo apt-get -qq install -y git || log_error "Failed to install git. ${FAIL_EMOJI}"
+        run_with_spinner sudo apt-get -qq update || log_error "Failed to update apt for git installation. ${FAIL_EMOJI}"
+        run_with_spinner sudo apt-get -qq install -y git || log_error "Failed to install git. ${FAIL_EMOJI}"
     else
         log_error "Operating system ${OS} not supported for automatic git installation. Please install git manually. ${FAIL_EMOJI}"
     fi
@@ -145,20 +166,22 @@ else
     log_success "git is already installed! ${SUCCESS_EMOJI}"
 fi
 
-log_info "Cloning repository..."
+log_info "Cloning repository ${REPO_URL} to ${CLONE_DIR}... ${SLOTH_EMOJI}"
 if [ -d "$CLONE_DIR" ]; then
+    log_warning "Directory ${CLONE_DIR} already exists. Removing it before cloning. ${SLOTH_EMOJI}"
     sudo rm -rf "$CLONE_DIR" > /dev/null 2>&1 || log_error "Failed to remove existing directory ${CLONE_DIR}. ${FAIL_EMOJI}"
 fi
-git clone -q "$REPO_URL" "$CLONE_DIR" || log_error "Failed to clone repository ${REPO_URL}. ${FAIL_EMOJI}"
+run_with_spinner git clone -q "$REPO_URL" "$CLONE_DIR" || log_error "Failed to clone repository ${REPO_URL}. ${FAIL_EMOJI}"
+log_success "Repository cloned successfully to ${CLONE_DIR}! ${SUCCESS_EMOJI}"
 
 # --- Install contextvars for Salt pip module ---
 log_info "Ensuring 'pip3' is installed... ${SLOTH_EMOJI}"
-sudo apt-get -qq update || log_error "Failed to update apt for pip3 installation. ${FAIL_EMOJI}"
-sudo apt-get -qq install -y python3-pip || log_error "Failed to install pip3. ${FAIL_EMOJI}"
+run_with_spinner sudo apt-get -qq update || log_error "Failed to update apt for pip3 installation. ${FAIL_EMOJI}"
+run_with_spinner sudo apt-get -qq install -y python3-pip || log_error "Failed to install pip3. ${FAIL_EMOJI}"
 log_success "'pip3' installed! ${SUCCESS_EMOJI}"
 
 log_info "Installing required Python packages..."
-sudo pip3 install -q contextvars || log_error "Failed to install 'contextvars' Python package. ${FAIL_EMOJI}"
+run_with_spinner sudo pip3 install -q contextvars || log_error "Failed to install 'contextvars' Python package. ${FAIL_EMOJI}"
 
 prompt_for_password
 copy_salt_states
