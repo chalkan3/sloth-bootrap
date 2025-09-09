@@ -21,13 +21,23 @@ spinner() {
     local pid=$!
     local delay=0.1
     local spinstr="|/-"
-    local i=0
+    local i=0 # for spinner char
+    local j=0 # for names
+    local k=0 # for phrases
+
+    local SLOTH_NAMES=("Lady Guica" "Maria Guica" "Keite Guica")
+    local SLOTH_PHRASES=("trabalhando duro" "montando o sistema" "configurando tudo" "preparando o ambiente")
+
     tput civis # Hide cursor
     while ps -p $pid > /dev/null; do
         tput sc # Save cursor position
-        printf " [%c]  " "${spinstr:$i:1}"
+        printf " ${SLOTH_EMOJI} ${SLOTH_NAMES[$j]} ${SLOTH_PHRASES[$k]} [%c]  " "${spinstr:$i:1}"
         tput rc # Restore cursor position
+
         i=$(( (i+1) % ${#spinstr} ))
+        j=$(( (j+1) % ${#SLOTH_NAMES[@]} ))
+        k=$(( (k+1) % ${#SLOTH_PHRASES[@]} ))
+
         sleep $delay
     done
     tput cnorm # Show cursor
