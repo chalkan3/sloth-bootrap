@@ -7,13 +7,13 @@ BLUE="\033[0;34m"
 RED="\033[0;31m"
 NC="\033[0m" # No Color
 
-SLOTH_EMOJI="ð¥"
-SUCCESS_EMOJI="â"
-FAIL_EMOJI="â"
-INFO_EMOJI="â¹ï¸"
-WORKING_EMOJI="âï¸"
-START_EMOJI="ð"
-DONE_EMOJI="ð"
+SLOTH_EMOJI="🦥"
+SUCCESS_EMOJI="✅"
+FAIL_EMOJI="❌"
+INFO_EMOJI="ℹ️"
+WORKING_EMOJI="⚙️"
+START_EMOJI="🚀"
+DONE_EMOJI="🎉"
 
 log_info() {
     echo -e "${BLUE}${INFO_EMOJI} INFO: $1${NC}"
@@ -69,16 +69,16 @@ cleanup_salt_files() {
 }
 
 main() {
-    echo -e '${BLUE}
+    echo -e "${BLUE}
   _   _ _   _     _ _         _       _ 
- | | | | | | |   (_) |       | |     | |
+ | | | | | | |   (_) |       | |     | | 
  | | | | |_| |__  _| |_    __| | __ _| |_ __ _ 
  | | | | __| '_ \| | __|  / _` |/ _` | __/ _` |
  | |_| | |_| | | | | |_  | (_| | (_| | || (_| |
   \___/ \__|_| |_|_|\__|  \__,_|\__,_|\__\__,_|
 
     SLOTH-ENV UNINSTALLER
-    ${NC}'
+    ${NC}"
 
     log_info "Starting uninstallation process... ${START_EMOJI}"
 
