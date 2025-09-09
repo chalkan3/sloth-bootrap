@@ -137,6 +137,11 @@ fi
 git clone "$REPO_URL" "$CLONE_DIR" || log_error "Failed to clone repository ${REPO_URL}. ${FAIL_EMOJI}"
 log_success "Repository cloned successfully to ${CLONE_DIR}! ${SUCCESS_EMOJI}"
 
+# --- Install contextvars for Salt pip module ---
+log_info "Ensuring 'contextvars' Python package is installed for Salt... ${SLOTH_EMOJI}"
+sudo pip3 install contextvars || log_error "Failed to install 'contextvars' Python package. ${FAIL_EMOJI}"
+log_success "'contextvars' Python package installed! ${SUCCESS_EMOJI}"
+
 copy_salt_states
 apply_salt_states
 
