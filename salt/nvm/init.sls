@@ -27,3 +27,11 @@ node_lts_install:
     - unless: test -f /home/chalkan3/.nvm/default/bin/node # Check if LTS node is installed and set as default
     - require:
       - file: nvm_source_config
+
+npm_global_config:
+  cmd.run:
+    - name: npm config set prefix '~/.npm-global'
+    - runas: chalkan3
+    - unless: npm config get prefix | grep -q '~/.npm-global' # Check if already configured
+    - require:
+      - cmd: node_lts_install # Ensure node/npm is installed

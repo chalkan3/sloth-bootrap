@@ -18,9 +18,15 @@ python3_package:
   pkg.installed:
     - name: python3
 
+python3_venv_package:
+  pkg.installed:
+    - name: python3-venv
+
 python3_pip_package:
   pkg.installed:
     - name: python3-pip
+    - require:
+      - pkg: python3_venv_package # Ensure venv is installed before pip
 
 fd_package:
   pkg.installed:
