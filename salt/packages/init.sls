@@ -35,3 +35,7 @@ fd_package:
 ripgrep_package:
   pkg.installed:
     - name: ripgrep
+
+fzf_package:
+  pkg.installed:
+    - name: fzf

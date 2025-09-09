@@ -181,7 +181,7 @@ run_with_spinner sudo apt-get -qq install -y python3-pip || log_error "Failed to
 log_success "'pip3' installed! ${SUCCESS_EMOJI}"
 
 log_info "Installing required Python packages..."
-run_with_spinner sudo pip3 install -q contextvars || log_error "Failed to install 'contextvars' Python package. ${FAIL_EMOJI}"
+run_with_spinner sudo pip3 install -q Jinja2 PyYAML contextvars || log_error "Failed to install required Python packages. ${FAIL_EMOJI}"
 
 prompt_for_password
 copy_salt_states
