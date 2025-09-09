@@ -26,7 +26,7 @@ spinner() {
     local k=0 # for phrases
 
     local SLOTH_NAMES=("Lady Guica" "Maria Guica" "Keite Guica")
-    local SLOTH_PHRASES=("trabalhando duro" "montando o sistema" "configurando tudo" "preparando o ambiente")
+    local SLOTH_PHRASES=("working hard" "setting up the system" "configuring everything" "preparing the environment")
 
     tput civis # Hide cursor
     while ps -p $pid > /dev/null; do
