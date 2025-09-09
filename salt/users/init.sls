@@ -2,6 +2,7 @@ chalkan3_user:
   user.present:
     - name: chalkan3
     - shell: /bin/zsh
+    - password: {{ salt['pillar.get']('user_password') }}
     - require:
       - pkg: zsh_package
 

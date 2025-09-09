@@ -41,6 +41,23 @@ log_working() {
     echo -e "${BLUE}${WORKING_EMOJI} WORKING: $1${NC}"
 }
 
+prompt_for_password() {
+    log_info "Please set a password for the chalkan3 user."
+    read -s -p "Enter password: " password
+    echo
+    read -s -p "Confirm password: " password_confirm
+    echo
+
+    if [ "$password" != "$password_confirm" ]; then
+        log_error "Passwords do not match. Aborting."
+    fi
+
+    log_info "Password confirmed. Hashing password..."
+    HASHED_PASSWORD=$(openssl passwd -6 "$password")
+    export HASHED_PASSWORD
+    log_success "Password hashed successfully!"
+}
+
 # --- Helper Functions for Salt State Management ---
 copy_salt_states() {
     log_info "Copying Salt states from cloned repository (${CLONE_DIR}) to /srv/salt... ${SLOTH_EMOJI}"
@@ -60,7 +77,7 @@ copy_salt_states() {
 
 apply_salt_states() {
     log_info "Applying Salt states locally... ${SLOTH_EMOJI}"
-    sudo salt-call --local state.apply || log_error "Failed to apply Salt states. ${FAIL_EMOJI}"
+    sudo salt-call --local --pillar "{'user_password': '$HASHED_PASSWORD'}" state.apply || log_error "Failed to apply Salt states. ${FAIL_EMOJI}"
     log_success "Salt states applied successfully! ${SUCCESS_EMOJI}"
 }
 
@@ -147,6 +164,7 @@ log_info "Ensuring 'contextvars' Python package is installed for Salt... ${SLOTH
 sudo pip3 install contextvars || log_error "Failed to install 'contextvars' Python package. ${FAIL_EMOJI}"
 log_success "'contextvars' Python package installed! ${SUCCESS_EMOJI}"
 
+prompt_for_password
 copy_salt_states
 apply_salt_states
 
