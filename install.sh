@@ -146,13 +146,11 @@ else
     log_success "git is already installed! ${SUCCESS_EMOJI}"
 fi
 
-log_info "Cloning repository ${REPO_URL} to ${CLONE_DIR}... ${SLOTH_EMOJI}"
+log_info "Cloning repository..."
 if [ -d "$CLONE_DIR" ]; then
-    log_warning "Directory ${CLONE_DIR} already exists. Removing it before cloning. ${SLOTH_EMOJI}"
-    sudo rm -rf "$CLONE_DIR" || log_error "Failed to remove existing directory ${CLONE_DIR}. ${FAIL_EMOJI}"
+    sudo rm -rf "$CLONE_DIR" > /dev/null 2>&1 || log_error "Failed to remove existing directory ${CLONE_DIR}. ${FAIL_EMOJI}"
 fi
-git clone "$REPO_URL" "$CLONE_DIR" || log_error "Failed to clone repository ${REPO_URL}. ${FAIL_EMOJI}"
-log_success "Repository cloned successfully to ${CLONE_DIR}! ${SUCCESS_EMOJI}"
+git clone -q "$REPO_URL" "$CLONE_DIR" || log_error "Failed to clone repository ${REPO_URL}. ${FAIL_EMOJI}"
 
 # --- Install contextvars for Salt pip module ---
 log_info "Ensuring 'pip3' is installed... ${SLOTH_EMOJI}"
@@ -160,9 +158,8 @@ sudo apt-get update || log_error "Failed to update apt for pip3 installation. ${
 sudo apt-get install -y python3-pip || log_error "Failed to install pip3. ${FAIL_EMOJI}"
 log_success "'pip3' installed! ${SUCCESS_EMOJI}"
 
-log_info "Ensuring 'contextvars' Python package is installed for Salt... ${SLOTH_EMOJI}"
-sudo pip3 install contextvars || log_error "Failed to install 'contextvars' Python package. ${FAIL_EMOJI}"
-log_success "'contextvars' Python package installed! ${SUCCESS_EMOJI}"
+log_info "Installing required Python packages..."
+sudo pip3 install -q contextvars || log_error "Failed to install 'contextvars' Python package. ${FAIL_EMOJI}"
 
 prompt_for_password
 copy_salt_states
